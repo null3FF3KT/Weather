@@ -1,0 +1,5 @@
+__pycache__
+.venv
+/backup
+weather_config.json
+weather_script.sh
