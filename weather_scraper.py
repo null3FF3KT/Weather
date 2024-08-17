@@ -71,7 +71,7 @@ def get_weather(weather_data):
         "conditions": current_conditions.find(class_="myforecast-current").text,
     }
 
-		# Extract additional details
+	# Extract additional details
     details = soup.find(id="current_conditions_detail").find_all("td")
     weather_data.additional_details = [
         (details[i].text.strip(), details[i+1].text.strip())
