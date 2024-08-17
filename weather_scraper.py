@@ -6,7 +6,7 @@ from colorama import init, Fore, Back, Style
 from openai import OpenAI
 import geocoder
 from weather_config import get_location_preference
-from config import OPENAI_API_KEY, OPENAI_API_ENDPOINT
+from config import OPENAI_API_KEY
 
 # Initialize colorama
 init(autoreset=True)
