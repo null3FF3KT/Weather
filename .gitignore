@@ -3,3 +3,4 @@ __pycache__
 /backup
 weather_config.json
 weather_script.sh
+config.py
