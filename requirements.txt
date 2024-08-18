@@ -1,0 +1,5 @@
+requests==2.32.3
+beautifulsoup4==4.12.3
+colorama==0.4.6
+openai==1.41.0
+geocoder==1.38.1

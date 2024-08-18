@@ -1,5 +1,5 @@
 # Weather Scraper
-Get current weather and weekly forecast in your commandline.
+Get current weather, weekly forecast, and an AI summary of the Atlantic Tropical Weather Discussion in your commandline.
 
 ## License
 This project is licensed under the MIT License - see the LICENSE.txt file for details.
@@ -12,7 +12,9 @@ This application retrieves weather data from NOAA/NWS. Please use this applicati
 
 ## Dependencies
 - Python3 
-- pip install requests beautifulsoup4 colorama geocoder
+- pip install -r requirements.txt
+
+- You will need to sign up for access to OpenAI's API and get an api key for your version of this project.
 
 ## Troubleshooting
 If you need to start over with this application, find and delete the weather_config.json file.
