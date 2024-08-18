@@ -1,6 +1,6 @@
+import textwrap
 import requests
 from bs4 import BeautifulSoup
-import time
 from datetime import datetime
 from colorama import init, Fore, Back, Style
 from openai import OpenAI
@@ -13,19 +13,22 @@ init(autoreset=True)
 
 # Print helper functions
 def print_header(text):
-    print(f"\n{Back.CYAN}{Fore.YELLOW}{Style.BRIGHT}{text}{Style.RESET_ALL}")
+    print(f"\n{Back.CYAN}{Fore.YELLOW}{Style.BRIGHT}{text:^60}{Style.RESET_ALL}")
 
 def print_subheader(text):
-    print(f"{Fore.YELLOW}{Style.BRIGHT}{text}{Style.RESET_ALL}")
+    print(f"{Fore.YELLOW}{Style.BRIGHT}{text.center(60)}{Style.RESET_ALL}")
 
 def print_info(label, value):
-    print(f"{Fore.LIGHTGREEN_EX}{label}:{Style.RESET_ALL} {value}")
+    label_width = 20
+    value_width = 38
+    print(f"{Fore.LIGHTGREEN_EX}{label:<{label_width}}{Style.RESET_ALL}"
+          f"{value:<{value_width}}")
 
 def print_warning(text):
-    print(f"{Back.RED}{Fore.WHITE}{Style.BRIGHT}{text}{Style.RESET_ALL}")
+    print(f"{Back.RED}{Fore.WHITE}{Style.BRIGHT}{text:^60}{Style.RESET_ALL}")
 
 def print_highlight(text, color=Fore.LIGHTYELLOW_EX):
-    print(f"{color}{Style.BRIGHT}{text}{Style.RESET_ALL}")
+    print(f"{color}{Style.BRIGHT}{text:^60}{Style.RESET_ALL}")
 
 class WeatherData:
     def __init__(self):
@@ -95,27 +98,27 @@ def get_weather(weather_data):
         weather_data.hazards = [hazard.text for hazard in hazards.find_all('a')]
 
 def print_weather(weather_data):
-    print_header(f"🌦️  Weather Report for {weather_data.location} as of {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} 🌦️")
-    
-    print_subheader("\n📍 Current Conditions:")
+    print_header("Weather Report")
     print_info("Location", weather_data.location)
-    print_info("Temperature", f"{Back.RED}{Fore.WHITE}{Style.BRIGHT}{weather_data.current_conditions['temperature']}{Style.RESET_ALL}")
+    print_info("As of", datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+    
+    print_subheader("Current Conditions")
+    print_info("Temperature", weather_data.current_conditions['temperature'])
     print_info("Conditions", weather_data.current_conditions['conditions'])
 
-    print_subheader("\n📊 Additional Details:")
+    print_subheader("Additional Details")
     for label, value in weather_data.additional_details:
         print_info(label, value)
 
-    print_subheader("\n🗓️  7-Day Forecast:")
+    print_subheader("7-Day Forecast")
     for period in weather_data.forecast:
-        print(f"{Fore.LIGHTBLUE_EX}{Style.BRIGHT}{period['name']}:{Style.RESET_ALL} "
-              f"{period['short_desc']}, "
-              f"{Back.LIGHTRED_EX}{Fore.WHITE}{Style.BRIGHT}{period['temp']}{Style.RESET_ALL}")
+        print_info(period['name'], 
+                   f"{period['short_desc']}, {period['temp']}")
 
     if weather_data.hazards:
-        print_warning("\n⚠️  Hazardous Conditions:")
+        print_warning("Hazardous Conditions")
         for hazard in weather_data.hazards:
-            print_warning(f"  • {hazard}")
+            print(textwrap.fill(f"• {hazard}", width=60))
 
 def get_weather_discussion():
     url = "https://www.nhc.noaa.gov/text/MIATWDAT.shtml"
@@ -133,7 +136,7 @@ def summarize_report(discussion, weather_data):
     """
     
     response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4o",
         messages=[{"role": "system", "content": "You are an informative weatherman."}, {"role": "user", "content": prompt}]
     )
     
@@ -150,7 +153,7 @@ def main():
     discussion = get_weather_discussion()
     summary = summarize_report(discussion, weather_data)
     print("\nWeather Discussion Summary:")
-    print(summary)
+    print(textwrap.fill(summary, width=60))
 
 if __name__ == "__main__":
     main()
