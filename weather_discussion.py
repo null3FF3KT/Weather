@@ -19,7 +19,7 @@ def summarize_report(discussion, weather_data):
     """
     
     response = client.chat.completions.create(
-        model="gpt-4o-2024-08-06",
+        model="gpt-5-nano-2025-08-07",
         messages=[{"role": "system", "content": "You are an informative weatherman."}, {"role": "user", "content": prompt}]
     )
     
